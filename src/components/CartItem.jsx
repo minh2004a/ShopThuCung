@@ -23,8 +23,20 @@ const CartItem = ({ item }) => {
     >
       {/* Product Image */}
       <Link to={`/product/${item.id}`} className="flex-shrink-0">
-        <div className="w-full md:w-32 h-32 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-lg flex items-center justify-center">
-          <span className="text-6xl">{item.emoji}</span>
+        <div className="w-full md:w-32 h-32 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-lg flex items-center justify-center overflow-hidden relative">
+          {item.image ? (
+            <img
+              src={item.image}
+              alt={item.name}
+              className="absolute inset-0 w-full h-full object-cover"
+              onError={(e) => {
+                e.target.style.display = 'none'
+              }}
+            />
+          ) : null}
+          <span className="text-6xl" style={{ display: item.image ? 'none' : 'block' }}>
+            {item.emoji}
+          </span>
         </div>
       </Link>
 

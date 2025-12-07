@@ -32,8 +32,23 @@ const ProductCard = ({ product }) => {
       >
         {/* Image Container */}
         <div className="relative overflow-hidden bg-gray-100 aspect-square">
-        {/* Product Image Placeholder */}
-        <div className="absolute inset-0 flex items-center justify-center text-7xl">
+        {/* Product Image */}
+        {product.image ? (
+          <img
+            src={product.image}
+            alt={product.name}
+            className="absolute inset-0 w-full h-full object-cover"
+            onError={(e) => {
+              e.target.style.display = 'none'
+              e.target.nextElementSibling.style.display = 'flex'
+            }}
+          />
+        ) : null}
+        {/* Emoji Fallback */}
+        <div
+          className="absolute inset-0 flex items-center justify-center text-7xl"
+          style={{ display: product.image ? 'none' : 'flex' }}
+        >
           {product.emoji}
         </div>
 

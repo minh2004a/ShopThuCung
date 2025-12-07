@@ -100,7 +100,19 @@ const ProductDetail = () => {
               className="relative"
             >
               <div className="bg-gradient-to-br from-primary-100 to-secondary-100 rounded-3xl aspect-square flex items-center justify-center relative overflow-hidden shadow-xl">
-                <div className="text-9xl">{product.emoji}</div>
+                {product.image ? (
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="absolute inset-0 w-full h-full object-cover rounded-3xl"
+                    onError={(e) => {
+                      e.target.style.display = 'none'
+                    }}
+                  />
+                ) : null}
+                <div className="text-9xl" style={{ display: product.image ? 'none' : 'block' }}>
+                  {product.emoji}
+                </div>
 
                 {/* Badges */}
                 <div className="absolute top-4 left-4 flex flex-col gap-2">
