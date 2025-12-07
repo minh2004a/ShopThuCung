@@ -4,7 +4,11 @@
       "Bash(if exist package.json type package.json)",
       "Bash(dir:*)",
       "Bash(npm create vite@latest . -- --template react)",
-      "Bash(npm install)"
+      "Bash(npm install)",
+      "Bash(npm run build:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd product detail pages and shopping cart functionality\n\nFeatures Added:\n- Product detail pages with full product information\n- Shopping cart with add/remove/update quantity\n- Cart persistence using localStorage\n- Product navigation and routing\n- Cart counter badge in header\n- Related products section\n- Quantity controls and stock status\n- Responsive cart page with order summary\n- Smooth animations and transitions\n\nNew Components:\n- ProductDetail page with tabs for description/features/specs\n- Cart page with checkout summary\n- CartItem component with quantity controls\n- CartContext for global state management\n\nUpdated Components:\n- App.jsx: Added routing and CartProvider\n- Header.jsx: Cart count badge and navigation links\n- ProductCard.jsx: Added navigation and cart integration\n- FeaturedProducts.jsx: Uses centralized product data\n\nNew Files:\n- src/context/CartContext.jsx\n- src/data/products.js\n- src/pages/Home.jsx\n- src/pages/ProductDetail.jsx\n- src/pages/Cart.jsx\n- src/components/CartItem.jsx\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push)"
     ],
     "deny": [],
     "ask": []

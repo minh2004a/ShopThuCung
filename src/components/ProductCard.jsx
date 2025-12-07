@@ -1,21 +1,37 @@
 import { motion } from 'framer-motion'
 import { FiShoppingCart, FiHeart, FiStar } from 'react-icons/fi'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useCart } from '../context/CartContext'
 
 const ProductCard = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false)
+  const { addToCart } = useCart()
+
+  const handleAddToCart = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    addToCart(product, 1)
+  }
+
+  const handleFavoriteClick = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsFavorite(!isFavorite)
+  }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      whileHover={{ y: -8 }}
-      transition={{ duration: 0.3 }}
-      className="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300"
-    >
-      {/* Image Container */}
-      <div className="relative overflow-hidden bg-gray-100 aspect-square">
+    <Link to={`/product/${product.id}`}>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        whileHover={{ y: -8 }}
+        transition={{ duration: 0.3 }}
+        className="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer"
+      >
+        {/* Image Container */}
+        <div className="relative overflow-hidden bg-gray-100 aspect-square">
         {/* Product Image Placeholder */}
         <div className="absolute inset-0 flex items-center justify-center text-7xl">
           {product.emoji}
@@ -39,7 +55,7 @@ const ProductCard = ({ product }) => {
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          onClick={() => setIsFavorite(!isFavorite)}
+          onClick={handleFavoriteClick}
           className={`absolute top-4 right-4 p-2 rounded-full shadow-lg transition-colors ${
             isFavorite ? 'bg-red-500 text-white' : 'bg-white text-gray-700'
           }`}
@@ -56,10 +72,16 @@ const ProductCard = ({ product }) => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-6 py-3 bg-white text-gray-900 rounded-lg font-semibold flex items-center gap-2 shadow-lg"
+            onClick={handleAddToCart}
+            disabled={!product.inStock}
+            className={`px-6 py-3 rounded-lg font-semibold flex items-center gap-2 shadow-lg ${
+              product.inStock
+                ? 'bg-white text-gray-900 hover:bg-gray-100'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
           >
             <FiShoppingCart />
-            Thêm Vào Giỏ
+            {product.inStock ? 'Thêm Vào Giỏ' : 'Hết Hàng'}
           </motion.button>
         </motion.div>
       </div>
@@ -120,6 +142,7 @@ const ProductCard = ({ product }) => {
         </div>
       </div>
     </motion.div>
+    </Link>
   )
 }
 

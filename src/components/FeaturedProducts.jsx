@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 import ProductCard from './ProductCard'
+import { products as allProducts } from '../data/products'
 
 const FeaturedProducts = () => {
   const ref = useRef(null)
@@ -16,7 +17,7 @@ const FeaturedProducts = () => {
     { id: 'accessories', label: 'Phụ Kiện' }
   ]
 
-  const products = [
+  const products_old = [
     {
       id: 1,
       name: 'Chó Golden Retriever Con',
@@ -122,8 +123,8 @@ const FeaturedProducts = () => {
   ]
 
   const filteredProducts = activeFilter === 'all'
-    ? products
-    : products.filter(p => p.categoryId === activeFilter)
+    ? allProducts
+    : allProducts.filter(p => p.categoryId === activeFilter)
 
   return (
     <section className="py-16 md:py-24 bg-gray-50" ref={ref} id="featured">

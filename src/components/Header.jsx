@@ -2,18 +2,21 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FiMenu, FiX, FiShoppingCart, FiSearch, FiUser } from 'react-icons/fi'
 import { PiDogFill } from 'react-icons/pi'
+import { Link } from 'react-router-dom'
+import { useCart } from '../context/CartContext'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [cartCount] = useState(3)
+  const { getCartCount } = useCart()
+  const cartCount = getCartCount()
 
   const menuItems = [
-    { name: 'Trang Chủ', href: '#home' },
-    { name: 'Thú Cưng', href: '#pets' },
-    { name: 'Thức Ăn', href: '#food' },
-    { name: 'Đồ Chơi', href: '#toys' },
-    { name: 'Phụ Kiện', href: '#accessories' },
-    { name: 'Liên Hệ', href: '#contact' },
+    { name: 'Trang Chủ', href: '/' },
+    { name: 'Thú Cưng', href: '/#pets' },
+    { name: 'Thức Ăn', href: '/#food' },
+    { name: 'Đồ Chơi', href: '/#toys' },
+    { name: 'Phụ Kiện', href: '/#accessories' },
+    { name: 'Liên Hệ', href: '/#contact' },
   ]
 
   return (
@@ -21,32 +24,48 @@ const Header = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex items-center space-x-2"
-          >
-            <PiDogFill className="text-3xl md:text-4xl text-primary-500" />
-            <span className="text-xl md:text-2xl font-bold text-gray-800">
-              Shop Thú Cưng
-            </span>
-          </motion.div>
+          <Link to="/">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex items-center space-x-2 cursor-pointer"
+            >
+              <PiDogFill className="text-3xl md:text-4xl text-primary-500" />
+              <span className="text-xl md:text-2xl font-bold text-gray-800">
+                Shop Thú Cưng
+              </span>
+            </motion.div>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
             {menuItems.map((item, index) => (
-              <motion.a
-                key={item.name}
-                href={item.href}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="text-gray-700 hover:text-primary-500 font-medium transition-colors duration-200 relative group"
-              >
-                {item.name}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300"></span>
-              </motion.a>
+              item.name === 'Trang Chủ' ? (
+                <Link key={item.name} to={item.href}>
+                  <motion.span
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="text-gray-700 hover:text-primary-500 font-medium transition-colors duration-200 relative group cursor-pointer"
+                  >
+                    {item.name}
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300"></span>
+                  </motion.span>
+                </Link>
+              ) : (
+                <motion.a
+                  key={item.name}
+                  href={item.href}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="text-gray-700 hover:text-primary-500 font-medium transition-colors duration-200 relative group"
+                >
+                  {item.name}
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300"></span>
+                </motion.a>
+              )
             ))}
           </nav>
 
@@ -68,19 +87,25 @@ const Header = () => {
             >
               <FiUser className="text-xl" />
             </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="p-2 text-gray-700 hover:text-primary-500 transition-colors relative"
-              aria-label="Giỏ hàng"
-            >
-              <FiShoppingCart className="text-xl" />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-primary-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                  {cartCount}
-                </span>
-              )}
-            </motion.button>
+            <Link to="/cart">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-2 text-gray-700 hover:text-primary-500 transition-colors relative"
+                aria-label="Giỏ hàng"
+              >
+                <FiShoppingCart className="text-xl" />
+                {cartCount > 0 && (
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute -top-1 -right-1 bg-primary-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full"
+                  >
+                    {cartCount}
+                  </motion.span>
+                )}
+              </motion.button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -127,14 +152,16 @@ const Header = () => {
                 <button className="p-2 text-gray-700 hover:text-primary-500">
                   <FiUser className="text-xl" />
                 </button>
-                <button className="p-2 text-gray-700 hover:text-primary-500 relative">
-                  <FiShoppingCart className="text-xl" />
-                  {cartCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-primary-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                      {cartCount}
-                    </span>
-                  )}
-                </button>
+                <Link to="/cart">
+                  <button className="p-2 text-gray-700 hover:text-primary-500 relative">
+                    <FiShoppingCart className="text-xl" />
+                    {cartCount > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-primary-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                        {cartCount}
+                      </span>
+                    )}
+                  </button>
+                </Link>
               </div>
             </div>
           </motion.div>

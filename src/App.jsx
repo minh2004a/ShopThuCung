@@ -1,34 +1,24 @@
-import { Helmet } from 'react-helmet-async'
+import { Routes, Route } from 'react-router-dom'
+import { CartProvider } from './context/CartContext'
 import Header from './components/Header'
-import Hero from './components/Hero'
-import Categories from './components/Categories'
-import FeaturedProducts from './components/FeaturedProducts'
-import PromoBanner from './components/PromoBanner'
 import Footer from './components/Footer'
+import Home from './pages/Home'
+import ProductDetail from './pages/ProductDetail'
+import Cart from './pages/Cart'
 
 function App() {
   return (
-    <>
-      <Helmet>
-        <title>Shop Thú Cưng - Cửa Hàng Thú Cưng Trực Tuyến Hàng Đầu Việt Nam</title>
-        <meta name="description" content="Shop Thú Cưng cung cấp đa dạng thú cưng, thức ăn, đồ chơi và phụ kiện chất lượng cao. Giao hàng toàn quốc, giá tốt nhất thị trường." />
-        <meta property="og:title" content="Shop Thú Cưng - Cửa Hàng Thú Cưng Trực Tuyến" />
-        <meta property="og:description" content="Chuyên cung cấp thú cưng, thức ăn, đồ chơi và phụ kiện chất lượng cao" />
-        <meta property="og:type" content="website" />
-        <link rel="canonical" href="https://shopthucung.vn" />
-      </Helmet>
-
+    <CartProvider>
       <div className="min-h-screen bg-gray-50">
         <Header />
-        <main>
-          <Hero />
-          <Categories />
-          <FeaturedProducts />
-          <PromoBanner />
-        </main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/cart" element={<Cart />} />
+        </Routes>
         <Footer />
       </div>
-    </>
+    </CartProvider>
   )
 }
 
